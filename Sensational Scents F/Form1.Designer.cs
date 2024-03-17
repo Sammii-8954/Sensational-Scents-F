@@ -110,13 +110,7 @@
             // 
             this.ProductDropDown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ProductDropDown.FormattingEnabled = true;
-            this.ProductDropDown.Items.AddRange(new object[] {
-            "Scented Candles",
-            "Hand Soaps",
-            "Bath Soaps",
-            "Bath Bombs",
-            "Accessories"});
-            this.ProductDropDown.Location = new System.Drawing.Point(12, 313);
+            this.ProductDropDown.Location = new System.Drawing.Point(12, 329);
             this.ProductDropDown.Name = "ProductDropDown";
             this.ProductDropDown.Size = new System.Drawing.Size(157, 21);
             this.ProductDropDown.TabIndex = 10;
@@ -198,6 +192,7 @@
             this.Controls.Add(this.label1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
