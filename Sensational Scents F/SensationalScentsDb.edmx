@@ -5,6 +5,14 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="SensationalScentsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="shortname" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="SensationalRecord">
           <Key>
             <PropertyRef Name="id" />
@@ -23,6 +31,26 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="50" />
+          <Property Name="type" Type="nvarchar" MaxLength="50" />
+          <Property Name="scents" Type="nvarchar" MaxLength="50" />
+          <Property Name="size" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="user_roles">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userid" Type="int" />
+          <Property Name="roleid" Type="int" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="isActive" Type="bit" />
         </EntityType>
         <Association Name="FK_SensationalRecord_TypesofProductsUpdated">
           <End Role="TypesofProductsUpdated" Type="Self.TypesofProductsUpdated" Multiplicity="1" />
@@ -36,12 +64,63 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_user_roles_user_roles">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="user_roles" Type="Self.user_roles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="user_roles">
+              <PropertyRef Name="userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_user_roles_users">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="0..1" />
+          <End Role="user_roles" Type="Self.user_roles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="user_roles">
+              <PropertyRef Name="roleid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_users_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="users1" Type="Self.users" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="users1">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="SensationalScentsModelStoreContainer">
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SensationalRecord" EntityType="Self.SensationalRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TypesofProductsUpdated" EntityType="Self.TypesofProductsUpdated" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user_roles" EntityType="Self.user_roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_SensationalRecord_TypesofProductsUpdated" Association="Self.FK_SensationalRecord_TypesofProductsUpdated">
             <End Role="TypesofProductsUpdated" EntitySet="TypesofProductsUpdated" />
             <End Role="SensationalRecord" EntitySet="SensationalRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_user_roles_user_roles" Association="Self.FK_user_roles_user_roles">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_roles" EntitySet="user_roles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_user_roles_users" Association="Self.FK_user_roles_users">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="user_roles" EntitySet="user_roles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_users_users" Association="Self.FK_users_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="users1" EntitySet="users" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -55,7 +134,22 @@
             <End Role="TypesofProductsUpdated" EntitySet="TypesofProductsUpdateds" />
             <End Role="SensationalRecord" EntitySet="SensationalRecords" />
           </AssociationSet>
-        </EntityContainer>
+          <EntitySet Name="Roles" EntityType="SensationalScentsModel.Role" />
+          <EntitySet Name="user_roles" EntityType="SensationalScentsModel.user_roles" />
+          <EntitySet Name="users" EntityType="SensationalScentsModel.user" />
+          <AssociationSet Name="FK_user_roles_users" Association="SensationalScentsModel.FK_user_roles_users">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="user_roles" EntitySet="user_roles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_user_roles_user_roles" Association="SensationalScentsModel.FK_user_roles_user_roles">
+            <End Role="user" EntitySet="users" />
+            <End Role="user_roles" EntitySet="user_roles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_users_users" Association="SensationalScentsModel.FK_users_users">
+            <End Role="user" EntitySet="users" />
+            <End Role="user1" EntitySet="users" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="SensationalRecord">
           <Key>
             <PropertyRef Name="id" />
@@ -75,7 +169,10 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="scents" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="SensationalRecords" Relationship="SensationalScentsModel.FK_SensationalRecord_TypesofProductsUpdated" FromRole="TypesofProductsUpdated" ToRole="SensationalRecord" />
+          <Property Name="size" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_SensationalRecord_TypesofProductsUpdated">
           <End Type="SensationalScentsModel.TypesofProductsUpdated" Role="TypesofProductsUpdated" Multiplicity="1" />
@@ -89,7 +186,74 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="shortname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="user_roles" Relationship="SensationalScentsModel.FK_user_roles_users" FromRole="Role" ToRole="user_roles" />
+        </EntityType>
+        <EntityType Name="user_roles">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userid" Type="Int32" />
+          <Property Name="roleid" Type="Int32" />
+          <NavigationProperty Name="Role" Relationship="SensationalScentsModel.FK_user_roles_users" FromRole="user_roles" ToRole="Role" />
+          <NavigationProperty Name="user" Relationship="SensationalScentsModel.FK_user_roles_user_roles" FromRole="user_roles" ToRole="user" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="isActive" Type="Boolean" />
+          <NavigationProperty Name="user_roles" Relationship="SensationalScentsModel.FK_user_roles_user_roles" FromRole="user" ToRole="user_roles" />
+          <NavigationProperty Name="users1" Relationship="SensationalScentsModel.FK_users_users" FromRole="user" ToRole="user1" />
+          <NavigationProperty Name="user1" Relationship="SensationalScentsModel.FK_users_users" FromRole="user1" ToRole="user" />
+        </EntityType>
+        <Association Name="FK_user_roles_users">
+          <End Type="SensationalScentsModel.Role" Role="Role" Multiplicity="0..1" />
+          <End Type="SensationalScentsModel.user_roles" Role="user_roles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="user_roles">
+              <PropertyRef Name="roleid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_user_roles_user_roles">
+          <End Type="SensationalScentsModel.user" Role="user" Multiplicity="0..1" />
+          <End Type="SensationalScentsModel.user_roles" Role="user_roles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="user_roles">
+              <PropertyRef Name="userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_users_users">
+          <End Type="SensationalScentsModel.user" Role="user" Multiplicity="1" />
+          <End Type="SensationalScentsModel.user" Role="user1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="user1">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -111,12 +275,43 @@
           <EntitySetMapping Name="TypesofProductsUpdateds">
             <EntityTypeMapping TypeName="SensationalScentsModel.TypesofProductsUpdated">
               <MappingFragment StoreEntitySet="TypesofProductsUpdated">
+                <ScalarProperty Name="size" ColumnName="size" />
+                <ScalarProperty Name="scents" ColumnName="scents" />
+                <ScalarProperty Name="type" ColumnName="type" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="SensationalScentsModel.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="shortname" ColumnName="shortname" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user_roles">
+            <EntityTypeMapping TypeName="SensationalScentsModel.user_roles">
+              <MappingFragment StoreEntitySet="user_roles">
+                <ScalarProperty Name="roleid" ColumnName="roleid" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="SensationalScentsModel.user">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

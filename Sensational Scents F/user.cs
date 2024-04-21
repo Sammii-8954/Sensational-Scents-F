@@ -12,21 +12,22 @@ namespace Sensational_Scents_F
     using System;
     using System.Collections.Generic;
     
-    public partial class TypesofProductsUpdated
+    public partial class User
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TypesofProductsUpdated()
+        public User()
         {
-            this.SensationalRecords = new HashSet<SensationalRecord>();
+            this.user_roles = new HashSet<user_roles>();
         }
     
         public int id { get; set; }
-        public string name { get; set; }
-        public string type { get; set; }
-        public string scents { get; set; }
-        public string size { get; set; }
+        public string username { get; set; }
+        public string password { get; set; }
+        public Nullable<bool> isActive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SensationalRecord> SensationalRecords { get; set; }
+        public virtual ICollection<user_roles> user_roles { get; set; }
+        public virtual User users1 { get; set; }
+        public virtual User user1 { get; set; }
     }
 }

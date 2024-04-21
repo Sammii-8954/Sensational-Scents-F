@@ -5,10 +5,16 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="795ac713992e47fa995c93ef7a341b2a" Name="Diagram1">
-        <EntityTypeShape EntityType="SensationalScentsModel.SensationalRecord" Width="1.5" PointX="4.25" PointY="1" />
-        <EntityTypeShape EntityType="SensationalScentsModel.TypesofProductsUpdated" Width="1.5" PointX="1.25" PointY="1.75" />
+        <EntityTypeShape EntityType="SensationalScentsModel.SensationalRecord" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="SensationalScentsModel.TypesofProductsUpdated" Width="1.5" PointX="0.75" PointY="1.25" />
         <AssociationConnector Association="SensationalScentsModel.FK_SensationalRecord_TypesofProductsUpdated" />
-      </Diagram>
+        <EntityTypeShape EntityType="SensationalScentsModel.Role" Width="1.5" PointX="5.5" PointY="4.25" />
+        <EntityTypeShape EntityType="SensationalScentsModel.user_roles" Width="1.5" PointX="7.75" PointY="1.125" />
+        <EntityTypeShape EntityType="SensationalScentsModel.user" Width="1.5" PointX="5.5" PointY="1" />
+        <AssociationConnector Association="SensationalScentsModel.FK_user_roles_users" />
+        <AssociationConnector Association="SensationalScentsModel.FK_user_roles_user_roles" />
+        <AssociationConnector Association="SensationalScentsModel.FK_users_users" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

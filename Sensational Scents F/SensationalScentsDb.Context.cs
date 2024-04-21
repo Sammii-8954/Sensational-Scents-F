@@ -27,5 +27,8 @@ namespace Sensational_Scents_F
     
         public virtual DbSet<SensationalRecord> SensationalRecords { get; set; }
         public virtual DbSet<TypesofProductsUpdated> TypesofProductsUpdateds { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<user_roles> user_roles { get; set; }
+        public virtual DbSet<User> users { get; set; }
     }
 }
