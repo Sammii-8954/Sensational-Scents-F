@@ -17,6 +17,6 @@ namespace Sensational_Scents_F
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Login());
-        }
+        } //Just an example. Forgot to write the update
     }
 }
